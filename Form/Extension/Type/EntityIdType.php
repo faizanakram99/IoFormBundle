@@ -1,6 +1,12 @@
 <?php
 
+
 /*
+ * Part of forked version of IoFormBundle compatible with Symfony 2.8 (and above including 3.0)
+ * Faizan Akram! < hello@faizanakram.me >
+ *
+ * Notice from original author below
+ *
  * This file is part of the IoFormBundle package
  *
  * (c) Alessio Baglio <io.alessio@gmail.com>
@@ -12,22 +18,23 @@
 namespace Io\FormBundle\Form\Extension\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Form\Exception\FormException;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Io\FormBundle\DataTransformer\OneEntityToIdTransformer;
 
 /**
-* Entity identitifer
-*
-* @author Gregwar <g.passault@gmail.com>
-*/
+ * Entity identitifer
+ *
+ * @author Gregwar <g.passault@gmail.com>
+ */
 class EntityIdType extends AbstractType
 {
     protected $registry;
-	protected $hidden;
+    protected $hidden;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -36,32 +43,37 @@ class EntityIdType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$this->hidden = $options['hidden'];
+        $this->hidden = $options['hidden'];
         $builder->addViewTransformer(new OneEntityToIdTransformer(
             $this->registry->getManager($options['em']),
             $options['class'],
-            $options['property'],
+            $options['choice_label'],
             $options['query_builder']
         ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-		parent::setDefaultOptions ($resolver);
+        parent::configureOptions($resolver);
         $resolver->setDefaults (array (
-		    'compound' => false,
+            'compound' => false,
             'em' => null,
             'class' => null,
-            'property' => null,
+            'choice_label' => null,
             'query_builder' => null,
-            'type' => 'hidden',
+            'type' => HiddenType::class,
             'hidden' => true,
         ));
     }
 
     public function getParent()
     {
-        return $this->hidden ? 'hidden' : 'text';
+        return $this->hidden ? HiddenType::class : TextType::class;
+    }
+
+    public function getBlockPrefix()
+    {
+        return $this->getName();
     }
 
     public function getName()

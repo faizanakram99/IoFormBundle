@@ -1,6 +1,11 @@
 <?php
 
 /*
+ * Part of forked version of IoFormBundle compatible with Symfony 2.8 (and above including 3.0)
+ * Faizan Akram! < hello@faizanakram.me >
+ *
+ * Notice from original author below
+ *
  * This file is part of the IoFormBundle package
  *
  * (c) Alessio Baglio <io.alessio@gmail.com>
@@ -12,7 +17,7 @@
 namespace Io\FormBundle\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\FormException;
+use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormError;
@@ -63,7 +68,7 @@ class OneEntityToIdTransformer implements DataTransformerInterface
         }
 
         if (!$this->unitOfWork->isInIdentityMap($data)) {
-            throw new FormException('Entities passed to the choice field must be managed');
+            throw new RuntimeException('Entities passed to the choice field must be managed');
         }
 
         if ($this->property) {
