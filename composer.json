@@ -5,8 +5,8 @@
     "homepage": "http://github.com/faizanakram99/IoFormBundle",
     "license": "MIT",
      "autoload": {
-        "psr-0": {
-            "Io\\FormBundle": ""
+        "psr-4": {
+            "Io\\FormBundle\\": ""
           }
     }
 }
