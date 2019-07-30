@@ -1,0 +1,12 @@
+{
+    "name": "io/formbundle",
+    "type": "symfony-bundle",
+    "description": "Forked version of IoFormBundle",
+    "homepage": "http://github.com/faizanakram99/IoFormBundle",
+    "license": "MIT",
+     "autoload": {
+        "psr-0": {
+            "Io\\FormBundle": ""
+          }
+    }
+}
